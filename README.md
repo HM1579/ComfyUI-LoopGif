@@ -4,6 +4,8 @@ A simple ComfyUI custom node for creating looping GIFs from VIDEO inputs.
 
 This node is mainly designed for short AI-generated videos, especially image-to-video workflows where the first and last frames are expected to be similar. It can trim frames from the beginning and end, apply mild loop blending, and optionally compensate for gradual color drift before exporting a GIF.
 
+When `delete_ratio` is set to `0`, the node can also be used as a normal GIF exporter without trimming frames.
+
 ## Features
 
 - Convert ComfyUI `VIDEO` input to looping GIF
@@ -15,6 +17,7 @@ This node is mainly designed for short AI-generated videos, especially image-to-
 - Optional head/tail frame trimming
 - Optional loop seam blending
 - Optional gradual color drift correction
+- Can also be used to create regular GIFs when `delete_ratio` is set to `0`
 - Automatically cleans temporary working files after execution
 
 ## Installation
@@ -68,6 +71,37 @@ On macOS, the node also checks common Homebrew paths:
 /usr/local/bin/ffmpeg
 ```
 
+## Example Workflow
+
+A minimal example workflow is included in the `examples` folder.
+
+![LoopGif example workflow](examples/loopgif_example_workflow.png)
+
+Files:
+
+- [`examples/loopgif_example_workflow.json`](examples/loopgif_example_workflow.json)
+- [`examples/loopgif_example_workflow.png`](examples/loopgif_example_workflow.png)
+
+The example shows how to connect a ComfyUI `VIDEO` input to the `Loop GIF` node and export a looping GIF.
+
+You can also use the `Video Combine` node from `ComfyUI-VideoHelperSuite` as an in-workflow GIF preview window. Connect the `images` and `frame_rate` outputs from `Loop GIF` to `Video Combine`, set the output format to GIF, and disable saving if you only want to preview the result inside the workflow.
+
+## Creating Better Seamless Loops
+
+For seamless looping GIFs, it is recommended to use a first-frame / last-frame video workflow when generating the source video latent. In image-to-video workflows, the starting image and ending image should ideally be the same image.
+
+The prompt should describe not only the motion or transformation, but also how the subject returns to the initial state. For example, instead of only describing an action, describe the action and its recovery process.
+
+Because the return-to-start motion needs to occupy part of the available frame range, the action should not be too complex, especially for very short videos. If the motion is too ambitious, the video may not have enough frames to complete both the action and the return process, resulting in a less stable loop.
+
+In short:
+
+- Use the same image as both the first and last frame when possible
+- Describe both the motion and the return process in the prompt
+- Keep the motion simple for short videos
+- Use `delete_ratio` to trim unstable or slow frames near the loop seam
+- Set `delete_ratio` to `0` if you only want to export a regular GIF without loop trimming
+
 ## Node
 
 ### Loop GIF
@@ -120,6 +154,8 @@ Suggested default:
 
 If the loop has a long pause near the seam, increase this value slightly.  
 If the loop feels too jumpy, reduce it slightly.
+
+Set this value to `0` if you do not want to trim frames. In this mode, `Loop GIF` can be used as a regular GIF exporter.
 
 ### gif_fps
 
@@ -196,6 +232,10 @@ For most workflows, the recommended tuning order is:
 
 In many cases, `delete_ratio` alone is enough.
 
+For normal GIF export, set `delete_ratio` to `0`.
+
+For in-workflow preview, you can connect the `images` and `frame_rate` outputs to `Video Combine` from `ComfyUI-VideoHelperSuite`.
+
 ## Temporary Files
 
 The node creates a temporary hidden working folder during execution, such as:
@@ -212,6 +252,7 @@ This folder is automatically removed after execution, whether the process succee
 - Large videos may consume more memory when outputting processed frames as `IMAGE`
 - Color drift correction is experimental
 - Loop quality still depends heavily on the source video and prompt quality
+- For seamless loops, the source video should already have a reasonable first-to-last-frame transition
 
 ## License
 
