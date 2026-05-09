@@ -10,6 +10,7 @@ dependencies = ["numpy", "Pillow", "imageio-ffmpeg"]
 Repository = "https://github.com/HM1579/ComfyUI-LoopGif"
 Documentation = "https://github.com/HM1579/ComfyUI-LoopGif"
 "Bug Tracker" = "https://github.com/HM1579/ComfyUI-LoopGif/issues"
+License = "https://github.com/HM1579/ComfyUI-LoopGif/blob/main/LICENSE"
 
 [tool.comfy]
 PublisherId = "hm1579"
