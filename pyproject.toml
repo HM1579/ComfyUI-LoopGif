@@ -1,0 +1,18 @@
+[project]
+name = "comfyui-loopgif"
+description = "A simple ComfyUI custom node for creating looping GIFs from VIDEO inputs."
+version = "1.0.1"
+license = "MIT"
+
+dependencies = ["numpy", "Pillow", "imageio-ffmpeg"]
+
+[project.urls]
+Repository = "https://github.com/HM1579/ComfyUI-LoopGif"
+Documentation = "https://github.com/HM1579/ComfyUI-LoopGif"
+"Bug Tracker" = "https://github.com/HM1579/ComfyUI-LoopGif/issues"
+
+[tool.comfy]
+PublisherId = "hm1579"
+DisplayName = "ComfyUI-LoopGif"
+Icon = ""
+includes = []
