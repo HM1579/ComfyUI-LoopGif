@@ -22,7 +22,15 @@ When `delete_ratio` is set to `0`, the node can also be used as a normal GIF exp
 
 ## Installation
 
-Clone this repository into your ComfyUI `custom_nodes` folder:
+### Install with ComfyUI Manager / Comfy Registry
+
+```bash
+comfy node install comfyui-loopgif
+```
+
+Or search for ComfyUI-LoopGif in ComfyUI Manager.
+
+### Clone this repository into your ComfyUI `custom_nodes` folder:
 
 ```bash
 cd ComfyUI/custom_nodes
